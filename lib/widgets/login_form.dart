@@ -1,0 +1,239 @@
+import 'package:appartement/pages/home.dart';
+import 'package:appartement/widgets/bottom_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:appartement/widgets/input_widget.dart';
+import 'package:appartement/widgets/primary_button.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconly/iconly.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/input_provider.dart';
+
+class LoginForm extends StatefulWidget {
+  const LoginForm({super.key});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  bool isLoding = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final inputProvider = Provider.of<InputProvider>(context);
+
+    login() async {
+      try {
+        setState(() {
+          isLoding = true;
+        });
+        var user = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: inputProvider.emailL.text,
+                password: inputProvider.passL.text)
+            .whenComplete(() => setState(() {
+                  isLoding = false;
+                }));
+        if (user.user!.uid.isNotEmpty) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => BottomBar(),
+              ));
+        }
+        return user;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "user-not-found") {
+          print("l'utilisateur est n'existe pas ");
+          showDialog(
+              context: context,
+              builder: (c) {
+                return AlertDialog(
+                  title: const Text("Message d'erreur"),
+                  content: const Text("L'utilisateur est n'existe pas"),
+                  actions: <Widget>[
+                    PrimaryButton(
+                      height: 20,
+                      width: 20,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      widget: Text("Fermer",
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  )),
+                    )
+                  ],
+                );
+              });
+          setState(() {
+            isLoding = false;
+          });
+        } else if (e.code == "wrong-password") {
+          print("email ou mot de passe est incorrect ");
+          showDialog(
+              context: context,
+              builder: (c) {
+                return AlertDialog(
+                  title: const Text("Message d'erreur"),
+                  content: const Text("Email ou mot de passe est incorrect "),
+                  actions: <Widget>[
+                    PrimaryButton(
+                        height: 35,
+                        width: 60,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        widget: Text(
+                          "Fermer",
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
+                        ))
+                  ],
+                );
+              });
+          setState(() {
+            isLoding = false;
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            InputWidget(
+              pass: false,
+              controller: email,
+              keyboardType: TextInputType.text,
+              hintText: "Connexion par adresse e-mail",
+              prefixIcon: IconlyLight.message,
+            ),
+            const SizedBox(height: 15.0),
+            InputWidget(
+              pass: true,
+              controller: pass,
+              keyboardType: TextInputType.text,
+              hintText: "Mot de passe",
+              prefixIcon: IconlyLight.lock,
+            ),
+            const SizedBox(height: 25.0),
+            PrimaryButton(
+              load: isLoding,
+              height: 50,
+              width: double.infinity,
+              widget: isLoding ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ) :  Text("Se connecter",
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  )),
+              onPressed: () {
+                login();
+              },
+            ),
+            const SizedBox(height: 20.0),
+            Row(
+              children: const <Widget>[
+                Expanded(child: Divider()),
+                Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text(
+                    "OU",
+                    style: TextStyle(),
+                  ),
+                ),
+                Expanded(child: Divider()),
+              ],
+            ),
+            const SizedBox(
+              height: 15.0,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    height: 53,
+                    width: 150.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/svg/google.svg",
+                          width: 30.0,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        const Text(
+                          "Google",
+                          style: TextStyle(
+                            color: Color.fromRGBO(105, 108, 121, 1),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14.0),
+                    height: 53.0,
+                    width: 150.0,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        SvgPicture.asset(
+                          "assets/svg/facebook.svg",
+                          width: 30.0,
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        const Text(
+                          "Facebook",
+                          style: TextStyle(
+                            color: Color.fromRGBO(105, 108, 121, 1),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

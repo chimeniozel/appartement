@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "620245110276",
+    "project_id": "appartement-df9a3",
+    "storage_bucket": "appartement-df9a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620245110276:android:e227ce4993b12c1e2f2f51",
+        "android_client_info": {
+          "package_name": "com.example.appartement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620245110276-of75ca1d2n9ns87s1ecnuma8g9qaajc6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR-92fJ33igfZ5ps10E6MBWVMMCRYStLE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620245110276-of75ca1d2n9ns87s1ecnuma8g9qaajc6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
