@@ -19,12 +19,8 @@ class RegisterForm extends StatefulWidget {
 }
 
 class _RegisterFormState extends State<RegisterForm> {
-  // TextEditingController email = TextEditingController();
-  // TextEditingController pass = TextEditingController();
-  // TextEditingController nomPrenom = TextEditingController();
-  // TextEditingController telephone = TextEditingController();
-
   bool isLoding = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +64,10 @@ class _RegisterFormState extends State<RegisterForm> {
                         Navigator.of(context).pop();
                       },
                       widget: Text("Fermer",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
                     )
                   ],
                 );
@@ -95,10 +91,10 @@ class _RegisterFormState extends State<RegisterForm> {
                         Navigator.of(context).pop();
                       },
                       widget: Text("Fermer",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
                     )
                   ],
                 );
@@ -122,10 +118,10 @@ class _RegisterFormState extends State<RegisterForm> {
                         Navigator.of(context).pop();
                       },
                       widget: Text("Fermer",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
                     )
                   ],
                 );
@@ -142,55 +138,93 @@ class _RegisterFormState extends State<RegisterForm> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             InputWidget(
-              pass: false,
-              controller: inputProvider.nomPrenom,
-              keyboardType: TextInputType.text,
-              hintText: "Nom et prenom",
-              prefixIcon: IconlyLight.user,
-            ),
+                pass: false,
+                controller: inputProvider.nomPrenom,
+                keyboardType: TextInputType.text,
+                hintText: "Nom et prenom",
+                prefixIcon: IconlyLight.user,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length > 2) {
+                    return null;
+                  } else if (value.isEmpty) {
+                    return "Entrez votre Nom et prenom";
+                  }
+                }),
             const SizedBox(height: 15.0),
             const SizedBox(height: 15.0),
             InputWidget(
-              pass: false,
-              controller: inputProvider.telephone,
-              keyboardType: TextInputType.text,
-              hintText: "Telephone",
-              prefixIcon: IconlyLight.call,
-            ),
+                pass: false,
+                controller: inputProvider.telephone,
+                keyboardType: TextInputType.text,
+                hintText: "Telephone",
+                prefixIcon: IconlyLight.call,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length >= 8) {
+                    return null;
+                  } else if (value.length < 8 && value.isNotEmpty) {
+                    return "Votre Numero Telephone est Incorrect";
+                  } else {
+                    return "Entrez Votre Numero Telephone";
+                  }
+                }),
             const SizedBox(height: 15.0),
             InputWidget(
-              pass: false,
-              controller: inputProvider.emailR,
-              keyboardType: TextInputType.text,
-              hintText: "Adresse e-mail",
-              prefixIcon: IconlyLight.message,
-            ),
+                pass: false,
+                controller: inputProvider.emailR,
+                keyboardType: TextInputType.text,
+                hintText: "Adresse e-mail",
+                prefixIcon: IconlyLight.message,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length >= 10) {
+                    return null;
+                  } else if (value.length < 10 && value.isNotEmpty) {
+                    return "Votre Email est Incorrect";
+                  } else {
+                    return "Entrez Votre Email";
+                  }
+                }),
             const SizedBox(height: 15.0),
             InputWidget(
-              pass: true,
-              controller: inputProvider.passR,
-              keyboardType: TextInputType.text,
-              hintText: "S'inscrire mot de passe",
-              prefixIcon: IconlyLight.lock,
-            ),
+                pass: true,
+                controller: inputProvider.passR,
+                keyboardType: TextInputType.text,
+                hintText: "S'inscrire mot de passe",
+                prefixIcon: IconlyLight.lock,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length > 5) {
+                    return null;
+                  } else if (value.length < 8 && value.isNotEmpty) {
+                    return "Le mot de passe est faible";
+                  } else {
+                    return "Merci de nous donner votre mot de passe";
+                  }
+                }),
             const SizedBox(height: 25.0),
             PrimaryButton(
               height: 50,
               width: double.infinity,
-              widget: isLoding ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              ) : Text("Enregistrez-vous",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
-              onPressed: addUser,
+              widget: isLoding
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text("Enregistrez-vous",
+                      style: GoogleFonts.roboto(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
+              onPressed: () {
+                if (!_formKey.currentState!.validate()) {
+                  return;
+                }
+                addUser();
+              },
             ),
             const SizedBox(height: 20.0),
             Row(

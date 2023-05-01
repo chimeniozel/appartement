@@ -71,8 +71,8 @@ class _AuthenticationState extends State<Authentication> {
                 height: 40.0,
               ),
               AnimatedCrossFade(
-                firstChild: LoginForm(),
-                secondChild: RegisterForm(),
+                firstChild: const LoginForm(),
+                secondChild: const RegisterForm(),
                 crossFadeState: active == "register"
                     ? CrossFadeState.showSecond
                     : CrossFadeState.showFirst,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:appartement/theme/color.dart';
+import 'package:iconly/iconly.dart';
 
 import '../model/Appartement.dart';
-import 'custom_image.dart';
 
 class FavorisItem extends StatelessWidget {
   const FavorisItem({Key? key, required this.appartement, required this.index})
@@ -17,7 +17,7 @@ class FavorisItem extends StatelessWidget {
 
   Widget buildFavoris(BuildContext context, int index) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5,horizontal: 8),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
       height: 130,
       decoration: BoxDecoration(
         color: appBgColor,
@@ -28,11 +28,11 @@ class FavorisItem extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Positioned(
-            top: 20,
+            top: 15,
             left: 0,
             child: Container(
               width: MediaQuery.of(context).size.height * 0.44,
-              height: 100,
+              height: 104,
               margin: const EdgeInsets.only(right: 15),
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -58,12 +58,27 @@ class FavorisItem extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        appartement.libele.toString(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w600),
+                      SizedBox(
+                        width: 205,
+                        height: 17,
+                        // color: Colors.red,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              appartement.libele.toString(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w600),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_right,
+                              size: 30,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 5,
@@ -96,7 +111,7 @@ class FavorisItem extends StatelessWidget {
                         height: 5,
                       ),
                       SizedBox(
-                        width: 200,
+                        width: 205,
                         // color: Colors.red,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,14 +125,14 @@ class FavorisItem extends StatelessWidget {
                             ),
                             // const SizedBox(width: 110),
                             Container(
-                                height: 25,
-                                width: 25,
+                                height: 30,
+                                width: 30,
                                 decoration: const BoxDecoration(
-                                    color: primaryColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(50))),
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
                                 child: const Icon(
-                                  Icons.favorite_border,
+                                  IconlyLight.heart,
                                   size: 20,
                                   color: Colors.white,
                                 ))
@@ -136,15 +151,15 @@ class FavorisItem extends StatelessWidget {
               height: 140,
               width: 150,
               decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: shadowColor.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 1,
-                    offset: const Offset(0, 1), // changes position of shadow
-                  ),
-                ],
-                color: appBgColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: shadowColor.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: const Offset(0, 1), // changes position of shadow
+                    ),
+                  ],
+                  color: appBgColor,
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
                       fit: BoxFit.cover,

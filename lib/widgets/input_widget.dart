@@ -12,6 +12,7 @@ class InputWidget extends StatefulWidget {
   final bool pass;
   final TextInputType keyboardType;
   final TextEditingController controller;
+  final String? Function(String?)? validator;
   const InputWidget(
       {super.key,
       required this.hintText,
@@ -19,7 +20,8 @@ class InputWidget extends StatefulWidget {
       this.height = 53.0,
       required this.keyboardType,
       required this.controller,
-      required this.pass});
+      required this.pass,
+      required this.validator});
 
   @override
   State<InputWidget> createState() => _InputWidgetState();
@@ -40,68 +42,71 @@ class _InputWidgetState extends State<InputWidget> {
         left: widget.prefixIcon == null ? 16.0 : 0.0,
       ),
       child: TextFormField(
-        keyboardType: widget.keyboardType,
-        obscureText: widget.pass,
-        onChanged: (value) {
-          setState(() {
-            widget.controller.text = value;
-            if (widget.hintText == "Nom et prenom") {
-              inputProvider.setNomPrenom(widget.controller);
-            }
-            if (widget.hintText == "Telephone") {
-              inputProvider.setTelephone(widget.controller);
-            }
-            if (widget.hintText == "Adresse e-mail") {
-              inputProvider.setEmailR(widget.controller);
-            }
-            if (widget.hintText == "S'inscrire mot de passe") {
-              inputProvider.setPassR(widget.controller);
-            }
-            if (widget.hintText == "Connexion par adresse e-mail") {
-              inputProvider.setEmailL(widget.controller);
-            }
-            if (widget.hintText == "Mot de passe") {
-              inputProvider.setPassL(widget.controller);
-            }
-            if (widget.hintText == "Libel appartement") {
-              inputProvider.setLibelle(widget.controller);
-            }
-            if (widget.hintText == "Discreption") {
-              inputProvider.setDiscription(widget.controller);
-            }
-            if (widget.hintText == "Addresse") {
-              inputProvider.setAddresse(widget.controller);
-            }
-            if (widget.hintText == "Prix") {
-              inputProvider.setPrix(widget.controller);
-            }
-            if (widget.hintText == "Rechercher") {
-              inputProvider.setRechercher(widget.controller);
-            }
-            
-          });
-        },
-        decoration: InputDecoration(
-          prefixIcon: widget.prefixIcon == null
-              ? null
-              : Icon(
-                  widget.prefixIcon,
-                  color: primaryColor,
-                ),
-          enabledBorder: InputBorder.none,
-          focusedBorder: InputBorder.none,
-          border: const OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.transparent,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.pass,
+          onChanged: (value) {
+            setState(() {
+              widget.controller.text = value;
+              if (widget.hintText == "Nom et prenom") {
+                inputProvider.setNomPrenom(widget.controller);
+              }
+              if (widget.hintText == "Telephone") {
+                inputProvider.setTelephone(widget.controller);
+              }
+              if (widget.hintText == "Adresse e-mail") {
+                inputProvider.setEmailR(widget.controller);
+              }
+              if (widget.hintText == "S'inscrire mot de passe") {
+                inputProvider.setPassR(widget.controller);
+              }
+              if (widget.hintText == "Connexion par adresse e-mail") {
+                inputProvider.setEmailL(widget.controller);
+              }
+              if (widget.hintText == "Mot de passe") {
+                inputProvider.setPassL(widget.controller);
+              }
+              if (widget.hintText == "Libel appartement") {
+                inputProvider.setLibelle(widget.controller);
+              }
+              if (widget.hintText == "Discreption") {
+                inputProvider.setDiscription(widget.controller);
+              }
+              if (widget.hintText == "Addresse") {
+                inputProvider.setAddresse(widget.controller);
+              }
+              if (widget.hintText == "Prix") {
+                inputProvider.setPrix(widget.controller);
+              }
+              if (widget.hintText == "Rechercher") {
+                
+                inputProvider.setRechercher(widget.controller);
+                print(inputProvider.rechercher.text);
+              }
+            });
+          },
+          decoration: InputDecoration(
+            prefixIcon: widget.prefixIcon == null
+                ? null
+                : Icon(
+                    widget.prefixIcon,
+                    color: primaryColor,
+                  ),
+            enabledBorder: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            border: const OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.transparent,
+              ),
+            ),
+            errorBorder: InputBorder.none,
+            focusedErrorBorder: InputBorder.none,
+            hintText: widget.hintText,
+            hintStyle: const TextStyle(
+              fontSize: 14.0,
+              color: Color.fromRGBO(105, 108, 121, 1),
             ),
           ),
-          hintText: widget.hintText,
-          hintStyle: const TextStyle(
-            fontSize: 14.0,
-            color: Color.fromRGBO(105, 108, 121, 1),
-          ),
-        ),
-      ),
+          validator: widget.validator),
     );
   }
 }

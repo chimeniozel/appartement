@@ -24,6 +24,7 @@ class _LoginFormState extends State<LoginForm> {
   TextEditingController email = TextEditingController();
   TextEditingController pass = TextEditingController();
   bool isLoding = false;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -66,10 +67,10 @@ class _LoginFormState extends State<LoginForm> {
                         Navigator.of(context).pop();
                       },
                       widget: Text("Fermer",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+                          style: GoogleFonts.roboto(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          )),
                     )
                   ],
                 );
@@ -114,39 +115,61 @@ class _LoginFormState extends State<LoginForm> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Form(
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             InputWidget(
-              pass: false,
-              controller: email,
-              keyboardType: TextInputType.text,
-              hintText: "Connexion par adresse e-mail",
-              prefixIcon: IconlyLight.message,
-            ),
+                pass: false,
+                controller: email,
+                keyboardType: TextInputType.text,
+                hintText: "Connexion par adresse e-mail",
+                prefixIcon: IconlyLight.message,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length >= 10) {
+                    return null;
+                  } else if (value.length < 10 && value.isNotEmpty) {
+                    return "Votre Email est Incorrect";
+                  } else {
+                    return "Entrez Votre Email";
+                  }
+                }),
             const SizedBox(height: 15.0),
             InputWidget(
-              pass: true,
-              controller: pass,
-              keyboardType: TextInputType.text,
-              hintText: "Mot de passe",
-              prefixIcon: IconlyLight.lock,
-            ),
+                pass: true,
+                controller: pass,
+                keyboardType: TextInputType.text,
+                hintText: "Mot de passe",
+                prefixIcon: IconlyLight.lock,
+                validator: (value) {
+                  if (value!.isNotEmpty && value.length > 5) {
+                    return null;
+                  } else if (value.length < 8 && value.isNotEmpty) {
+                    return "Le mot de passe est faible";
+                  } else {
+                    return "Merci de nous donner votre mot de passe";
+                  }
+                }),
             const SizedBox(height: 25.0),
             PrimaryButton(
               load: isLoding,
               height: 50,
               width: double.infinity,
-              widget: isLoding ? const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
-              ) :  Text("Se connecter",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  )),
+              widget: isLoding
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text("Se connecter",
+                      style: GoogleFonts.roboto(
+                        color: Colors.white,
+                        fontSize: 16.0,
+                      )),
               onPressed: () {
+                if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
                 login();
               },
             ),

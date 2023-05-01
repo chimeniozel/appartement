@@ -9,13 +9,16 @@ class Appartement {
   final GeoPoint? location;
   final String? description;
   final List<String>? images;
+  final List<String>? favorisUID;
   final int? nbChamber;
   final int? nbToilette;
+  final int? nbCuisines;
   final String? addresse;
   final int? prix;
   final String? propritaire;
   final String? louePar;
   final String? status;
+  final bool? forSell;
   Appartement({
     this.id,
     this.libele,
@@ -23,30 +26,36 @@ class Appartement {
     this.location,
     this.description,
     this.images,
+    this.favorisUID,
     this.nbChamber,
     this.nbToilette,
+    this.nbCuisines,
     this.addresse,
     this.prix,
     this.propritaire,
     this.louePar,
     this.status,
+    this.forSell,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      "id" : id,
+      "id": id,
       "nom": libele,
       "wilaya": wilaya,
       "location": location,
       "description": description,
       "images": images,
+      "favorisUID": <String>[],
       "nbChamber": nbChamber,
       "nbToilette": nbToilette,
+      "nbCuisines" : nbCuisines,
       "addresse": addresse,
       "prix": prix,
       "propritaire": propritaire,
       "louePar": louePar,
       "status": status,
+      "for_sell": forSell,
     };
   }
 
@@ -57,80 +66,71 @@ class Appartement {
         location: json['location'],
         description: json["description"],
         images: json["images"].cast<String>(),
+        favorisUID: json["favorisUID"].cast<String>(),
         nbChamber: json["nbChamber"],
         nbToilette: json["nbToilette"],
+        nbCuisines: json["nbCuisines"],
         addresse: json["addresse"],
         prix: json["prix"],
         propritaire: json["propritaire"],
         louePar: json["louePar"],
         status: json["status"],
+        forSell: json["for_sell"],
       );
-  Stream<List<Appartement>> getAppartements() {
+  Stream<List<Appartement>> getAppartements({bool? forSell, String? all , String? uid}) {
+    if (all == "") {
+      return FirebaseFirestore.instance
+          .collection("appartements")
+          .where("for_sell", isEqualTo: forSell)
+          .snapshots()
+          .map((snapchot) => snapchot.docs
+              .map((doc) => Appartement.fromJson(doc.data()))
+              .toList());
+    } else if(uid != null){
+      return FirebaseFirestore.instance
+          .collection("appartements")
+          .where("propritaire", isNotEqualTo: uid)
+          .snapshots()
+          .map((snapchot) => snapchot.docs
+              .map((doc) => Appartement.fromJson(doc.data()))
+              .toList());
+    }
+    else {
+      return FirebaseFirestore.instance
+          .collection("appartements")
+          // .where("for_sell", isEqualTo: forSell)
+          .snapshots()
+          .map((snapchot) => snapchot.docs
+              .map((doc) => Appartement.fromJson(doc.data()))
+              .toList());
+    }
+  }
+
+  Stream<List<Appartement>> getMesAppartement(String uid){
     return FirebaseFirestore.instance
-        .collection("appartements")
-        // .where("id_sous_categorie", isEqualTo: sousCategorieId)
-        .snapshots()
-        .map((snapchot) => snapchot.docs
-            .map((doc) => Appartement.fromJson(doc.data()))
-            .toList());
+          .collection("appartements")
+          .where("propritaire", isEqualTo: uid)
+          .snapshots()
+          .map((snapchot) => snapchot.docs
+              .map((doc) => Appartement.fromJson(doc.data()))
+              .toList());
+  }
+
+  Stream<List<Appartement>> getFavoris(String uid){
+    return FirebaseFirestore.instance
+          .collection("appartements")
+          .where("favorisUID", arrayContains: uid)
+          .snapshots()
+          .map((snapchot) => snapchot.docs
+              .map((doc) => Appartement.fromJson(doc.data()))
+              .toList());
+  }
+  Stream getUIFavoris(String docId){
+    return FirebaseFirestore.instance
+          .collection("appartements")
+          // .where("favorisUID", arrayContains: uid)
+          .doc(docId).snapshots()
+          .map((snapchot) => snapchot.get("favorisUID"));
   }
 }
 
-final popularInIndonesia = [
-  Appartement(
-      images: ["assets/apartment-1.jpeg"],
-      libele: "The Residences at New City",
-      location: const GeoPoint(10, 15),
-      description:
-          "This property is managed by Beztak, 2022 recipient of the US Best Managed Companies for the third year in a row, sponsored by Deloitte Private and The Wall Street Journal. Call and let us tell you why! ENJOY THE LIFE OF LUXURY Located in Chicago, Illinois The Residences at NewCity offers studio, one-, and two- nbToilette apartments and features a door attendant, covered parking, swimming pool with expansive sundeck, bike racks, BBQ/picnic addresse, and more!",
-      wilaya: "4",
-      nbChamber: 3,
-      nbToilette: 4,
-      addresse: "1000",
-      prix: 999,
-      louePar: "",
-      propritaire: "",
-      status: "Libre"),
-  Appartement(
-      images: ["assets/apartment-2.jpeg"],
-      libele: "Elevate Tower",
-      location: const GeoPoint(10, 15),
-      description:
-          "This property is managed by Beztak, 2022 recipient of the US Best Managed Companies for the third year in a row, sponsored by Deloitte Private and The Wall Street Journal. Call and let us tell you why! ENJOY THE LIFE OF LUXURY Located in Chicago, Illinois The Residences at NewCity offers studio, one-, and two- nbToilette apartments and features a door attendant, covered parking, swimming pool with expansive sundeck, bike racks, BBQ/picnic addresse, and more!",
-      wilaya: "5",
-      nbChamber: 5,
-      nbToilette: 6,
-      addresse: "2300",
-      prix: 1599,
-      louePar: "",
-      propritaire: "",
-      status: "Libre"),
-  Appartement(
-      images: ["assets/apartment-3.png"],
-      libele: "1042 on Machigan",
-      location: const GeoPoint(10, 15),
-      description:
-          "This property is managed by Beztak, 2022 recipient of the US Best Managed Companies for the third year in a row, sponsored by Deloitte Private and The Wall Street Journal. Call and let us tell you why! ENJOY THE LIFE OF LUXURY Located in Chicago, Illinois The Residences at NewCity offers studio, one-, and two- nbToilette apartments and features a door attendant, covered parking, swimming pool with expansive sundeck, bike racks, BBQ/picnic addresse, and more!",
-      wilaya: "5",
-      nbChamber: 3,
-      nbToilette: 5,
-      addresse: "1700",
-      prix: 1399,
-      louePar: "",
-      propritaire: "",
-      status: "Libre"),
-  Appartement(
-      images: ["assets/apartment-4.jpeg"],
-      libele: "Residence Park",
-      location: const GeoPoint(10, 15),
-      description:
-          "This property is managed by Beztak, 2022 recipient of the US Best Managed Companies for the third year in a row, sponsored by Deloitte Private and The Wall Street Journal. Call and let us tell you why! ENJOY THE LIFE OF LUXURY Located in Chicago, Illinois The Residences at NewCity offers studio, one-, and two- nbToilette apartments and features a door attendant, covered parking, swimming pool with expansive sundeck, bike racks, BBQ/picnic addresse, and more!",
-      wilaya: "4",
-      nbChamber: 3,
-      nbToilette: 4,
-      addresse: "900",
-      prix: 899,
-      louePar: "",
-      propritaire: "",
-      status: "Libre"),
-];

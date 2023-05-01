@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             primaryColor: primaryColor, fontFamily: 'AkayaTelivigala'),
         home: FirebaseAuth.instance.currentUser != null
-            ? BottomBar()
+            ? const BottomBar()
             : const Authentication(),
       ),
     );

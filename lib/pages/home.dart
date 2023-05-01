@@ -1,20 +1,17 @@
 import 'package:appartement/model/Appartement.dart';
-import 'package:appartement/pages/auth/authentication.dart';
-import 'package:appartement/pages/details_appartement.dart';
+import 'package:appartement/pages/appartemnt/details_appartement.dart';
 import 'package:appartement/pages/favoris.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:iconsax/iconsax.dart';
-
+import 'package:provider/provider.dart';
+import '../providers/input_provider.dart';
 import '../theme/color.dart';
-import '../widgets/bottom_bar.dart';
 import '../widgets/input_widget.dart';
-import '../widgets/primary_button.dart';
 import '../widgets/property_card.dart';
-import 'add_appartement.dart';
+import 'appartemnt/add_appartement.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -27,39 +24,15 @@ class _HomeState extends State<Home> {
   TextEditingController search = TextEditingController();
   int selectedCategory = 0;
   String filter = "Pour Tout";
+
+  bool forSell = false;
+
+  String all = "all";
   @override
   Widget build(BuildContext context) {
+    final inputProvider = Provider.of<InputProvider>(context);
     return Scaffold(
       // bottomNavigationBar: BottomBar(),
-      floatingActionButton: InkWell(
-        onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AddAppartement(),
-            )),
-        child: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: primaryColor,
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(169, 176, 185, 0.42),
-                spreadRadius: 0,
-                blurRadius: 8,
-                offset: Offset(0, 2), // changes position of shadow
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Icon(
-              Iconsax.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -100,18 +73,20 @@ class _HomeState extends State<Home> {
                   children: [
                     Expanded(
                       child: InputWidget(
-                        pass: false,
-                        controller: search,
-                        keyboardType: TextInputType.text,
-                        height: 44.0,
-                        hintText: "Rechercher",
-                        prefixIcon: IconlyLight.search,
-                      ),
+                          pass: false,
+                          controller: search,
+                          keyboardType: TextInputType.text,
+                          height: 44.0,
+                          hintText: "Rechercher",
+                          prefixIcon: IconlyLight.search,
+                          validator: (value) {
+                            return null;
+                          }),
                     ),
                     const SizedBox(
                       width: 10.0,
                     ),
-                    Container(
+                    SizedBox(
                       height: 44,
                       child: TextButton(
                         style: ButtonStyle(
@@ -132,6 +107,7 @@ class _HomeState extends State<Home> {
                           setState(() {
                             selectedCategory = 0;
                             filter = "Pour Tout";
+                            all = "all";
                           });
                           // Helper.nextScreen(context, Filters());
                         },
@@ -166,9 +142,10 @@ class _HomeState extends State<Home> {
                         onTap: () async {
                           setState(() {
                             selectedCategory = 1;
-                            filter = "A Vendre";
+                            // filter = "A Vendre";
+                            forSell = true;
+                            all = "";
                           });
-                          
                         },
                         child: Container(
                           alignment: Alignment.center,
@@ -202,7 +179,9 @@ class _HomeState extends State<Home> {
                         onTap: () {
                           setState(() {
                             selectedCategory = 2;
-                            filter = "A Louer";
+                            // filter = "A Louer";
+                            forSell = false;
+                            all = "";
                           });
                         },
                         child: Container(
@@ -264,7 +243,10 @@ class _HomeState extends State<Home> {
                   height: 25.0,
                 ),
                 StreamBuilder<List<Appartement>>(
-                    stream: Appartement().getAppartements(),
+                    stream: Appartement().getAppartements(
+                        forSell: forSell,
+                        all: all,
+                        uid: FirebaseAuth.instance.currentUser!.uid),
                     builder: (context, snapshot) {
                       if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                         return ListView.separated(
@@ -277,25 +259,53 @@ class _HomeState extends State<Home> {
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => DetailsAppartement(
-                                        appartement: snapshot.data![index]),
-                                  ),
-                                );
-                              },
-                              child: PropertyCard(
-                                appartement: snapshot.data![index],
-                              ),
-                            );
+                            if (snapshot.data![index].libele
+                                .toString()
+                                .toLowerCase()
+                                .contains(inputProvider.rechercher.text.toLowerCase())) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => DetailsAppartement(
+                                          appartement: snapshot.data![index]),
+                                    ),
+                                  );
+                                },
+                                child: PropertyCard(
+                                  appartement: snapshot.data![index],
+                                ),
+                              );
+                            }
+                            return Container();
                           },
                         );
+                      } else if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height - 400,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: primaryColor,
+                            ),
+                          ),
+                        );
                       } else {
-                        return const Center(
-                          child: CircularProgressIndicator(),
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height - 400,
+                          child: Center(
+                              child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset("assets/svg/no_data.svg",
+                                  width: 200, height: 200, fit: BoxFit.cover),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const Text("Pas d'appartement disponible"),
+                            ],
+                          )),
                         );
                       }
                     })

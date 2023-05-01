@@ -1,4 +1,6 @@
 import 'package:appartement/model/Appartement.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +16,7 @@ class PropertyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 250.0,
-            margin: const EdgeInsets.only(bottom: 5),
+      margin: const EdgeInsets.only(bottom: 5),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           color: Colors.white,
@@ -51,17 +53,37 @@ class PropertyCard extends StatelessWidget {
                     child: Container(
                       width: 45.0,
                       height: 45.0,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white,
+                        color: !appartement.favorisUID!.contains(
+                                FirebaseAuth.instance.currentUser!.uid)
+                            ? Colors.white
+                            : Colors.red,
                       ),
-                      child: const Icon(
-                        IconlyLight.heart,
-                        color:
-                            // this.appartement.liked
-                            //     ? Color.fromRGBO(255, 136, 0, 1)
-                            // :
-                            Color(0xFFC4C4C4),
+                      child: IconButton(
+                        onPressed: () async {
+                          List<String> favorisUID = appartement.favorisUID!;
+                          if (!appartement.favorisUID!.contains(
+                              FirebaseAuth.instance.currentUser!.uid)) {
+                            favorisUID
+                                .add(FirebaseAuth.instance.currentUser!.uid);
+                            await FirebaseFirestore.instance
+                                .collection("appartements")
+                                .doc(appartement.id)
+                                .update({"favorisUID": favorisUID});
+                          } else {
+                            favorisUID.remove(FirebaseAuth.instance.currentUser!.uid);
+                            await FirebaseFirestore.instance
+                                .collection("appartements")
+                                .doc(appartement.id)
+                                .update({"favorisUID": favorisUID});
+                          }
+                        },
+                        icon: const Icon(IconlyLight.heart),
+                        color: !appartement.favorisUID!.contains(
+                                FirebaseAuth.instance.currentUser!.uid)
+                            ? primaryColor
+                            : Colors.white,
                       ),
                     ),
                   ),
@@ -84,7 +106,7 @@ class PropertyCard extends StatelessWidget {
                       child: Text(
                         // this.appartement.appartementTypes == appartementTypes.AGENCY
                         //     ?
-                        "Agency"
+                        "Utilisateur"
                         // : "Private",
                         ,
                         style: TextStyle(
@@ -99,7 +121,7 @@ class PropertyCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 15.0,horizontal: 10),
+            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [

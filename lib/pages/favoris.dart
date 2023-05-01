@@ -1,14 +1,13 @@
 import 'package:appartement/model/Appartement.dart';
-import 'package:appartement/pages/details_appartement.dart';
+import 'package:appartement/pages/appartemnt/details_appartement.dart';
 import 'package:appartement/theme/color.dart';
-import 'package:appartement/widgets/custom_textbox.dart';
-import 'package:appartement/widgets/icon_box.dart';
+// import 'package:appartement/widgets/custom_textbox.dart';
+// import 'package:appartement/widgets/icon_box.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:iconly/iconly.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../utils/data.dart';
-import '../widgets/input_widget.dart';
-import '../widgets/recent_item.dart';
+import '../widgets/favoris_item.dart';
 
 class FavorisPage extends StatefulWidget {
   const FavorisPage({super.key});
@@ -20,25 +19,25 @@ class FavorisPage extends StatefulWidget {
 class _FavorisPageState extends State<FavorisPage> {
   TextEditingController search = TextEditingController();
 
-  getHeader() {
-    return Row(
-      children: [
-        Expanded(
-            child: CustomTextBox(
-          hint: "Search",
-          prefix: const Icon(Icons.search, color: Colors.grey),
-        )),
-        const SizedBox(
-          width: 10,
-        ),
-        IconBox(
-          bgColor: secondary,
-          radius: 10,
-          child: const Icon(Icons.filter_list_rounded, color: Colors.white),
-        )
-      ],
-    );
-  }
+  // getHeader() {
+  //   return Row(
+  //     children: [
+  //       Expanded(
+  //           child: CustomTextBox(
+  //         hint: "Search",
+  //         prefix: const Icon(Icons.search, color: Colors.grey),
+  //       )),
+  //       const SizedBox(
+  //         width: 10,
+  //       ),
+  //       IconBox(
+  //         bgColor: secondary,
+  //         radius: 10,
+  //         child: const Icon(Icons.filter_list_rounded, color: Colors.white),
+  //       )
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +59,7 @@ class _FavorisPageState extends State<FavorisPage> {
     //     recents.length, (index) => RecentItem(data: recents[index]));
 
     return StreamBuilder<List<Appartement>>(
-        stream: Appartement().getAppartements(),
+        stream: Appartement().getFavoris(FirebaseAuth.instance.currentUser!.uid),
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.isNotEmpty) {
             return SizedBox(
@@ -79,9 +78,28 @@ class _FavorisPageState extends State<FavorisPage> {
                       ),
                   itemCount: snapshot.data!.length),
             );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height - 200,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           } else {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return SizedBox(
+              height: MediaQuery.of(context).size.height - 200,
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SvgPicture.asset("assets/svg/hooked.svg",
+                      width: 200, height: 200, fit: BoxFit.cover),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text("Pas d'appartement favorisee"),
+                ],
+              )),
             );
           }
         });
