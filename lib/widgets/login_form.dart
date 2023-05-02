@@ -1,9 +1,8 @@
-import 'package:appartement/pages/home.dart';
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:appartement/widgets/bottom_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:appartement/widgets/input_widget.dart';
 import 'package:appartement/widgets/primary_button.dart';
@@ -46,13 +45,12 @@ class _LoginFormState extends State<LoginForm> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => BottomBar(),
+                builder: (context) => const BottomBar(),
               ));
         }
         return user;
       } on FirebaseAuthException catch (e) {
         if (e.code == "user-not-found") {
-          print("l'utilisateur est n'existe pas ");
           showDialog(
               context: context,
               builder: (c) {
@@ -79,7 +77,6 @@ class _LoginFormState extends State<LoginForm> {
             isLoding = false;
           });
         } else if (e.code == "wrong-password") {
-          print("email ou mot de passe est incorrect ");
           showDialog(
               context: context,
               builder: (c) {
@@ -108,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
           });
         }
       } catch (e) {
-        print(e);
+        //
       }
     }
 

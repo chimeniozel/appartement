@@ -43,7 +43,7 @@ class FavorisItem extends StatelessWidget {
                     color: shadowColor.withOpacity(0.1),
                     spreadRadius: 1,
                     blurRadius: 1,
-                    offset: const Offset(0, 1), // changes position of shadow
+                    offset: const Offset(0, 1),
                   ),
                 ],
               ),
@@ -61,7 +61,6 @@ class FavorisItem extends StatelessWidget {
                       SizedBox(
                         width: 205,
                         height: 17,
-                        // color: Colors.red,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -112,7 +111,6 @@ class FavorisItem extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 205,
-                        // color: Colors.red,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -123,7 +121,6 @@ class FavorisItem extends StatelessWidget {
                                   color: primaryColor,
                                   fontWeight: FontWeight.w500),
                             ),
-                            // const SizedBox(width: 110),
                             Container(
                                 height: 30,
                                 width: 30,
@@ -156,7 +153,7 @@ class FavorisItem extends StatelessWidget {
                       color: shadowColor.withOpacity(0.1),
                       spreadRadius: 1,
                       blurRadius: 1,
-                      offset: const Offset(0, 1), // changes position of shadow
+                      offset: const Offset(0, 1),
                     ),
                   ],
                   color: appBgColor,

@@ -2,16 +2,12 @@ import 'package:appartement/model/Appartement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:iconly/iconly.dart';
-// import 'package:real_estate_ui/models/appartement.dart';
-
 import '../theme/color.dart';
 
 class PropertyCard extends StatelessWidget {
   final Appartement appartement;
-  PropertyCard({required this.appartement});
+  const PropertyCard({super.key, required this.appartement});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -72,7 +68,8 @@ class PropertyCard extends StatelessWidget {
                                 .doc(appartement.id)
                                 .update({"favorisUID": favorisUID});
                           } else {
-                            favorisUID.remove(FirebaseAuth.instance.currentUser!.uid);
+                            favorisUID
+                                .remove(FirebaseAuth.instance.currentUser!.uid);
                             await FirebaseFirestore.instance
                                 .collection("appartements")
                                 .doc(appartement.id)
@@ -95,20 +92,10 @@ class PropertyCard extends StatelessWidget {
                     width: 45.0,
                     height: 45.0,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color:
-                            //  this.appartement.appartementTypes == appartementTypes.AGENCY
-                            //     ?
-                            primaryColor
-                        // : Color.fromRGBO(255, 136, 0, 1),
-                        ),
+                        shape: BoxShape.circle, color: primaryColor),
                     child: const Center(
                       child: Text(
-                        // this.appartement.appartementTypes == appartementTypes.AGENCY
-                        //     ?
-                        "Utilisateur"
-                        // : "Private",
-                        ,
+                        "Utilisateur",
                         style: TextStyle(
                           fontSize: 8.0,
                           color: Colors.white,

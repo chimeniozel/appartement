@@ -1,10 +1,8 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:io';
-
 import 'package:appartement/model/Appartement.dart';
 import 'package:appartement/widgets/input_widget.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +76,6 @@ class _AddAppartementState extends State<AddAppartement> {
           });
         });
       }
-      // late DocumentReference<Map<String, dynamic>> appart;
       if (imagesUrl.isNotEmpty) {
         await FirebaseFirestore.instance
             .collection("appartements")
@@ -125,16 +122,6 @@ class _AddAppartementState extends State<AddAppartement> {
     }
 
     return Scaffold(
-      // floatingActionButton: uploading
-      //     ? Container()
-      //     : PrimaryButton(
-      //         widget: const Icon(
-      //           IconlyLight.image,
-      //           color: Colors.white,
-      //         ),
-      //         onPressed: () => !uploading ? chooseImage() : null,
-      //         width: 50,
-      //         height: 50),
       appBar: AppBar(
         title: const Text(
           "Ajouter un appartement",
@@ -167,16 +154,6 @@ class _AddAppartementState extends State<AddAppartement> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                // Container(
-                //   margin: const EdgeInsets.only(right: 15, bottom: 15, top: 15),
-                //   child: const Text(
-                //     "Ajouter un appartement",
-                //     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                //   ),
-                // ),
                 InputWidget(
                   pass: false,
                   controller: libelle,
@@ -492,10 +469,6 @@ class _AddAppartementState extends State<AddAppartement> {
                     ),
                     onChanged: (value) => setState(() {
                       this.value = value;
-                      setState(() {
-                        // catVal = value;
-                      });
-                      // print("Willayas est $value");
                     }),
                     value: value,
                     items: willayas.map((buildMenuItem)).toList(),
@@ -519,8 +492,6 @@ class _AddAppartementState extends State<AddAppartement> {
                                         crossAxisCount: 2),
                                 itemBuilder: (context, index) {
                                   return Container(
-                                    // width: 100,
-                                    // height: 100,
                                     margin: const EdgeInsets.all(3),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
@@ -547,8 +518,6 @@ class _AddAppartementState extends State<AddAppartement> {
                               color: Colors.white,
                               fontSize: 16.0,
                             )),
-                    // load: uploading,
-                    // text: "Ajouter",
                     onPressed: () {
                       if (!_formKey.currentState!.validate()) {
                       return;
@@ -625,7 +594,6 @@ class _AddAppartementState extends State<AddAppartement> {
         _image.add(File(response.file!.path));
       });
     } else {
-      // print(response.file);
     }
   }
 

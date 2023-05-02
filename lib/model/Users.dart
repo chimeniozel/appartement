@@ -32,7 +32,6 @@ class Users {
   Stream<Users> getUser(String uid) {
     return FirebaseFirestore.instance
         .collection("users")
-        // .where("favorisUID", arrayContains: uid)
         .doc(uid)
         .snapshots()
         .map((snapchot) => Users.fromJson(snapchot.data()));

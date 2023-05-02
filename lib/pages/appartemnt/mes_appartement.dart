@@ -1,6 +1,5 @@
 import 'package:appartement/model/Appartement.dart';
 import 'package:appartement/pages/appartemnt/details_appartement.dart';
-import 'package:appartement/widgets/custom_date_range_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +9,6 @@ import 'package:iconly/iconly.dart';
 import 'package:unicons/unicons.dart';
 import '../../theme/color.dart';
 import '../auth/authentication.dart';
-import 'add_appartement.dart';
 
 class MesAppartements extends StatefulWidget {
   const MesAppartements({super.key});
@@ -90,43 +88,12 @@ class _MesAppartementsState extends State<MesAppartements> {
                           ),
                           child: Slidable(
                             key: UniqueKey(),
-                            // startActionPane: ActionPane(
-                            //     motion: const StretchMotion(),
-                            //     children: [
-                            //       SlidableAction(
-                            //           borderRadius: const BorderRadius.all(
-                            //               Radius.circular(8)),
-                            //           icon: UniconsLine.edit_alt,
-                            //           label: "Modifier",
-                            //           backgroundColor: const Color(0xFF1E7FFF)
-                            //               .withOpacity(0.9),
-                            //           onPressed: (context) {
-                            //             Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (_) => AddAppartement(
-                            //                           modifier: true,
-                            //                           service: service,
-                            //                         )));
-                            //           })
-                            //     ]),
-                            
                             endActionPane: ActionPane(
                                 dismissible: DismissiblePane(onDismissed: () {
                                   FirebaseFirestore.instance
                                       .collection("appartements")
                                       .doc(appartement.id)
                                       .delete();
-                                  //     .whenComplete(() async {
-                                  //   for (var element in users) {
-                                  //     await FirebaseFirestore.instance
-                                  //         .collection("users")
-                                  //         .doc(element.id)
-                                  //         .collection("servicesRecomment")
-                                  //         .doc(service.id)
-                                  //         .delete();
-                                  //   }
-                                  // });
                                 }),
                                 motion: const StretchMotion(),
                                 children: [
@@ -173,13 +140,11 @@ class _MesAppartementsState extends State<MesAppartements> {
                                 ),
                                 title: Text(
                                   appartement.libele.toString(),
-                                  // style: TextStyles.title.bold
                                 ),
                                 subtitle: Text(
                                   appartement.description.toString(),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  // style: TextStyles.bodySm.subTitleColor.bold,
                                 ),
                                 trailing: Icon(
                                   Icons.keyboard_arrow_right,
@@ -189,9 +154,6 @@ class _MesAppartementsState extends State<MesAppartements> {
                               ),
                             ),
                           )
-                          // .ripple(() {
-                          //   Navigator.pushNamed(context, "/DetailPage", arguments: model);
-                          // }, borderRadius: const BorderRadius.all(Radius.circular(20))),
                           ),
                     );
                   });
@@ -220,36 +182,6 @@ class _MesAppartementsState extends State<MesAppartements> {
           }
           }
           ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: primaryColor,
-      //   onPressed: () {
-      //     showCustomDateRangePicker(
-      //       context,
-      //       dismissible: true,
-      //       minimumDate: DateTime.now().subtract(const Duration(days: 30)),
-      //       maximumDate: DateTime.now().add(const Duration(days: 30)),
-      //       endDate: endDate,
-      //       startDate: startDate,
-      //       backgroundColor: Colors.white,
-      //       primaryColor: primaryColor,
-      //       onApplyClick: (start, end) {
-      //         // print("================================ $start , $end");
-      //         setState(() {
-      //           endDate = end;
-      //           startDate = start;
-      //         });
-      //       },
-      //       onCancelClick: () {
-      //         setState(() {
-      //           // endDate = null;
-      //           // startDate = null;
-      //         });
-      //       },
-      //     );
-      //   },
-      //   tooltip: 'choose date Range',
-      //   child: const Icon(Icons.calendar_today_outlined, color: Colors.white),
-      // ),
-    );
+      );
   }
 }

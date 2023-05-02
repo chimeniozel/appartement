@@ -5,13 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconly/iconly.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
 import '../providers/input_provider.dart';
 import '../theme/color.dart';
 import '../widgets/input_widget.dart';
 import '../widgets/property_card.dart';
-import 'appartemnt/add_appartement.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -32,7 +30,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final inputProvider = Provider.of<InputProvider>(context);
     return Scaffold(
-      // bottomNavigationBar: BottomBar(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
@@ -109,7 +106,6 @@ class _HomeState extends State<Home> {
                             filter = "Pour Tout";
                             all = "all";
                           });
-                          // Helper.nextScreen(context, Filters());
                         },
                         child: Row(
                           children: [

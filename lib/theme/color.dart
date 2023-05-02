@@ -25,15 +25,3 @@ const orange = Color(0xFFFFC8A2);
 const sky = Color(0xFFABDEE6);
 const blue = Color(0xFF509BE4);
 
-const listColors = [
-  green,
-  purple,
-  yellow,
-  orange,
-  sky,
-  secondary,
-  red,
-  blue,
-  pink,
-  yellow,
-];

@@ -1,4 +1,3 @@
-// import 'package:appartement/pages/melef/explore.dart';
 import 'package:appartement/pages/favoris.dart';
 import 'package:appartement/pages/home.dart';
 import 'package:appartement/pages/appartemnt/mes_appartement.dart';
@@ -14,11 +13,11 @@ class BottomBar extends StatefulWidget {
   const BottomBar({super.key});
 
   @override
-  _BottomBarState createState() => _BottomBarState();
+  BottomBarState createState() => BottomBarState();
 }
 
-class _BottomBarState extends State<BottomBar> {
-  var Tabs = <Widget>[
+class BottomBarState extends State<BottomBar> {
+  var tabs = <Widget>[
     const Home(),
     const FavorisPage(),
     const AddAppartement(),
@@ -35,7 +34,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Tabs[index],
+      body: tabs[index],
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: index,
         onTap: _handleIndexChanged,
@@ -47,7 +46,7 @@ class _BottomBarState extends State<BottomBar> {
             selectedColor: primaryColor,
           ),
 
-          /// Likes
+          /// Favoris
           SalomonBottomBarItem(
             icon: const Icon(IconlyLight.heart),
             title: const Text("Favoris"),
@@ -61,10 +60,10 @@ class _BottomBarState extends State<BottomBar> {
             selectedColor: primaryColor,
           ),
 
-          /// Profile
+          /// Mes Appartements
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.activity),
-            title: const Text("Mes Appartement"),
+            title: const Text("Mes Appartements"),
             selectedColor: primaryColor,
           ),
         ],
@@ -72,5 +71,3 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 }
-
-enum _SelectedTab { home, likes, search, profile }

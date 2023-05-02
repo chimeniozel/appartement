@@ -2,8 +2,6 @@ import 'package:appartement/providers/input_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_icons/flutter_icons.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:appartement/widgets/input_widget.dart';
 import 'package:appartement/widgets/primary_button.dart';
@@ -46,10 +44,6 @@ class _RegisterFormState extends State<RegisterForm> {
           setState(() {
             isLoding = false;
           });
-          // inputProvider.clearNomPrenom();
-          // inputProvider.clearTelephone();
-          // inputProvider.clearEmailL();
-          // inputProvider.clearPassR();
           showDialog(
               context: context,
               builder: (c) {
@@ -76,7 +70,6 @@ class _RegisterFormState extends State<RegisterForm> {
         return user;
       } on FirebaseAuthException catch (e) {
         if (e.code == "weak-password") {
-          print("le mot de passe est faible ");
           showDialog(
               context: context,
               builder: (c) {
@@ -103,7 +96,6 @@ class _RegisterFormState extends State<RegisterForm> {
             isLoding = false;
           });
         } else if (e.code == "email-already-in-use") {
-          print("email deja existe ");
           showDialog(
               context: context,
               builder: (c) {
@@ -131,7 +123,7 @@ class _RegisterFormState extends State<RegisterForm> {
           });
         }
       } catch (e) {
-        print(e);
+        // 
       }
     }
 
@@ -154,6 +146,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   } else if (value.isEmpty) {
                     return "Entrez votre Nom et prenom";
                   }
+                  return null;
                 }),
             const SizedBox(height: 15.0),
             const SizedBox(height: 15.0),

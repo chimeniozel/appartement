@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../theme/color.dart';
 
 class AuthTab extends StatelessWidget {
   final String active;
   final Function setActive;
-  const AuthTab({required this.active, required this.setActive});
+  const AuthTab({super.key, required this.active, required this.setActive});
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 55.0,
       child: Row(
         children: [
@@ -32,9 +31,9 @@ Widget getTabItem(String title, bool isActive, String key, Function setActive) {
         height: 52,
         decoration: BoxDecoration(
           color:
-              isActive ? Color.fromRGBO(47, 105, 248, 0.1) : Colors.transparent,
+              isActive ? const Color.fromRGBO(47, 105, 248, 0.1) : Colors.transparent,
           border: isActive
-              ? Border(
+              ? const Border(
                   bottom: BorderSide(
                     color: primaryColor,
                     width: 3.0,
@@ -47,7 +46,7 @@ Widget getTabItem(String title, bool isActive, String key, Function setActive) {
           style: TextStyle(
             color: isActive
                 ? blackColor
-                : Color.fromRGBO(172, 174, 181, 1),
+                : const Color.fromRGBO(172, 174, 181, 1),
           ),
         ),
       ),

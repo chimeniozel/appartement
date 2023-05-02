@@ -1,6 +1,7 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:appartement/theme/color.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/input_provider.dart';
@@ -78,9 +79,7 @@ class _InputWidgetState extends State<InputWidget> {
                 inputProvider.setPrix(widget.controller);
               }
               if (widget.hintText == "Rechercher") {
-                
                 inputProvider.setRechercher(widget.controller);
-                print(inputProvider.rechercher.text);
               }
             });
           },

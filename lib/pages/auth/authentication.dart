@@ -8,10 +8,10 @@ class Authentication extends StatefulWidget {
   const Authentication({super.key});
 
   @override
-  _AuthenticationState createState() => _AuthenticationState();
+  AuthenticationState createState() => AuthenticationState();
 }
 
-class _AuthenticationState extends State<Authentication> {
+class AuthenticationState extends State<Authentication> {
   String active = "login";
 
   void setActive(String val) {
@@ -24,6 +24,7 @@ class _AuthenticationState extends State<Authentication> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        // ignore: avoid_unnecessary_containers
         child: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,

@@ -98,7 +98,6 @@ class Appartement {
     else {
       return FirebaseFirestore.instance
           .collection("appartements")
-          // .where("for_sell", isEqualTo: forSell)
           .snapshots()
           .map((snapchot) => snapchot.docs
               .map((doc) => Appartement.fromJson(doc.data()))
@@ -128,7 +127,6 @@ class Appartement {
   Stream getUIFavoris(String docId){
     return FirebaseFirestore.instance
           .collection("appartements")
-          // .where("favorisUID", arrayContains: uid)
           .doc(docId).snapshots()
           .map((snapchot) => snapchot.get("favorisUID"));
   }
