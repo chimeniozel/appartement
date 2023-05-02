@@ -59,7 +59,7 @@ class FavorisItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: 205,
+                        width: 180,
                         height: 17,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -110,7 +110,7 @@ class FavorisItem extends StatelessWidget {
                         height: 5,
                       ),
                       SizedBox(
-                        width: 205,
+                        width: 180,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [

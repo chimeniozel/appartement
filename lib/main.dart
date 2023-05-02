@@ -1,3 +1,4 @@
+import 'package:appartement/pages/admin/appartements.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -24,11 +25,13 @@ class MyApp extends StatelessWidget {
       create: (context) => InputProvider(),
       builder: (context, child) => MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Appartement',
+        title: 'Sekeni',
         theme: ThemeData(
             primaryColor: primaryColor, fontFamily: 'AkayaTelivigala'),
         home: FirebaseAuth.instance.currentUser != null
-            ? const BottomBar()
+            ? FirebaseAuth.instance.currentUser!.displayName != "admin"
+                ? const BottomBar()
+                : const AppartementsAdmin()
             : const Authentication(),
       ),
     );

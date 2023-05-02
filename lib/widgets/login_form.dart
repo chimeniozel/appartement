@@ -10,6 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/admin/appartements.dart';
 import '../providers/input_provider.dart';
 
 class LoginForm extends StatefulWidget {
@@ -41,11 +42,18 @@ class _LoginFormState extends State<LoginForm> {
             .whenComplete(() => setState(() {
                   isLoding = false;
                 }));
-        if (user.user!.uid.isNotEmpty) {
+        if (user.user!.uid.isNotEmpty && user.user!.displayName != "admin") {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => const BottomBar(),
+              ));
+        }
+        else if(user.user!.uid.isNotEmpty && user.user!.displayName == "admin"){
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AppartementsAdmin(),
               ));
         }
         return user;

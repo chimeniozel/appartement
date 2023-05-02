@@ -537,6 +537,7 @@ class _AddAppartementState extends State<AddAppartement> {
                             prix: int.parse(inputProvider.prix.text),
                             status: "Libre",
                             wilaya: value,
+                            confirmation: "nouveau",
                             forSell: forSell));
                       } else {
                         showDialog(
