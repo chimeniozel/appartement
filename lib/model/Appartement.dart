@@ -49,7 +49,7 @@ class Appartement {
       "favorisUID": <String>[],
       "nbChamber": nbChamber,
       "nbToilette": nbToilette,
-      "nbCuisines" : nbCuisines,
+      "nbCuisines": nbCuisines,
       "addresse": addresse,
       "prix": prix,
       "propritaire": propritaire,
@@ -77,58 +77,57 @@ class Appartement {
         status: json["status"],
         forSell: json["for_sell"],
       );
-  Stream<List<Appartement>> getAppartements({bool? forSell, String? all , String? uid}) {
-    if (all == "") {
+  Stream<List<Appartement>> getAppartements(
+      {bool? forSell, String? all, String? uid}) {
+    if (all == "all") {
       return FirebaseFirestore.instance
           .collection("appartements")
+          .where("propritaire", isNotEqualTo: uid)
+          .snapshots()
+          .map((snapchot) {
+        print(snapchot.docs);
+        return snapchot.docs
+            .map((doc) => Appartement.fromJson(doc.data()))
+            .toList();
+      });
+    }
+    else {
+      return FirebaseFirestore.instance
+          .collection("appartements")
+          .where("propritaire", isNotEqualTo: uid)
           .where("for_sell", isEqualTo: forSell)
           .snapshots()
           .map((snapchot) => snapchot.docs
               .map((doc) => Appartement.fromJson(doc.data()))
               .toList());
-    } else if(uid != null){
-      return FirebaseFirestore.instance
-          .collection("appartements")
-          .where("propritaire", isNotEqualTo: uid)
-          .snapshots()
-          .map((snapchot) => snapchot.docs
-              .map((doc) => Appartement.fromJson(doc.data()))
-              .toList());
-    }
-    else {
-      return FirebaseFirestore.instance
-          .collection("appartements")
-          .snapshots()
-          .map((snapchot) => snapchot.docs
-              .map((doc) => Appartement.fromJson(doc.data()))
-              .toList());
     }
   }
 
-  Stream<List<Appartement>> getMesAppartement(String uid){
+  Stream<List<Appartement>> getMesAppartement(String uid) {
     return FirebaseFirestore.instance
-          .collection("appartements")
-          .where("propritaire", isEqualTo: uid)
-          .snapshots()
-          .map((snapchot) => snapchot.docs
-              .map((doc) => Appartement.fromJson(doc.data()))
-              .toList());
+        .collection("appartements")
+        .where("propritaire", isEqualTo: uid)
+        .snapshots()
+        .map((snapchot) => snapchot.docs
+            .map((doc) => Appartement.fromJson(doc.data()))
+            .toList());
   }
 
-  Stream<List<Appartement>> getFavoris(String uid){
+  Stream<List<Appartement>> getFavoris(String uid) {
     return FirebaseFirestore.instance
-          .collection("appartements")
-          .where("favorisUID", arrayContains: uid)
-          .snapshots()
-          .map((snapchot) => snapchot.docs
-              .map((doc) => Appartement.fromJson(doc.data()))
-              .toList());
+        .collection("appartements")
+        .where("favorisUID", arrayContains: uid)
+        .snapshots()
+        .map((snapchot) => snapchot.docs
+            .map((doc) => Appartement.fromJson(doc.data()))
+            .toList());
   }
-  Stream getUIFavoris(String docId){
+
+  Stream getUIFavoris(String docId) {
     return FirebaseFirestore.instance
-          .collection("appartements")
-          .doc(docId).snapshots()
-          .map((snapchot) => snapchot.get("favorisUID"));
+        .collection("appartements")
+        .doc(docId)
+        .snapshots()
+        .map((snapchot) => snapchot.get("favorisUID"));
   }
 }
-
