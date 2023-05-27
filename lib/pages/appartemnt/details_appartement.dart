@@ -459,66 +459,6 @@ class _DetailsAppartementState extends State<DetailsAppartement> {
             )
           ]),
         ),
-      floatingActionButton: Container(
-        margin: const EdgeInsets.only(left: 30),
-        child: ElevatedButton(
-            style:
-            ElevatedButton
-                .styleFrom(
-              shadowColor: Colors
-                  .black
-                  .withOpacity(
-                  1),
-              foregroundColor:
-              primary,
-              minimumSize:
-              const Size
-                  .fromHeight(50),
-              backgroundColor:
-              primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius
-                      .circular(
-                      10)),
-              elevation: 1.5,
-            ),
-            onPressed:
-                () async {
-              // var url =
-              //     'https://wa.me/${user.telephone}';
-              // await launch(url);
-              await FirebaseFirestore
-                  .instance
-                  .collection(
-                  "appartements")
-                  .doc(widget
-                  .appartement
-                  .id)
-                  .update({
-                "confirmation":
-                "acceptee"
-              });
-            },
-            child: Row(
-              mainAxisAlignment:
-              MainAxisAlignment
-                  .spaceAround,
-              children: const [
-                Text(
-                  "Confirmer",
-                  style: TextStyle(
-                      color: Colors
-                          .white),
-                ),
-                Icon(
-                    FontAwesomeIcons
-                        .check,
-                    color: Colors
-                        .white)
-              ],
-            )),
-      ),
     );
   }
 }
