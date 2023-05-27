@@ -1,5 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:ffi';
 import 'dart:io';
 import 'package:appartement/model/Appartement.dart';
 import 'package:appartement/widgets/input_widget.dart';
@@ -15,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../providers/input_provider.dart';
 import '../../theme/color.dart';
 import '../../widgets/primary_button.dart';
+import 'package:geolocator/geolocator.dart';
 
 class AddAppartement extends StatefulWidget {
   const AddAppartement({super.key});
@@ -42,7 +44,7 @@ class _AddAppartementState extends State<AddAppartement> {
   var willayas = <String>["Nouakchott", "Nouadhibou", "Atar", "Nema"];
   String? value = "Nouakchott";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  double? lat , long;
   bool forSell = false;
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         value: item,
@@ -53,11 +55,21 @@ class _AddAppartementState extends State<AddAppartement> {
           ),
         ),
       );
+  location() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude;
+    });
+    print("lat : $lat , long : $long");
+  }
 
   @override
   Widget build(BuildContext context) {
     final inputProvider = Provider.of<InputProvider>(context);
     Future uploadFile(Appartement appartement) async {
+      print("test ================ ");
       setState(() {
         uploading = true;
       });
@@ -177,7 +189,7 @@ class _AddAppartementState extends State<AddAppartement> {
                     controller: discription,
                     keyboardType: TextInputType.text,
                     hintText: "Discreption",
-                    prefixIcon: IconlyLight.message,
+                    prefixIcon: IconlyLight.info_circle,
                     validator: (value) {
                       if (value!.isNotEmpty && value.length >= 10) {
                         return null;
@@ -529,7 +541,7 @@ class _AddAppartementState extends State<AddAppartement> {
                             description: inputProvider.discription.text,
                             images: imagesUrl,
                             favorisUID: <String>[],
-                            location: const GeoPoint(18, -16),
+                            location: GeoPoint(lat!, long!),
                             nbChamber: nbchamber,
                             nbToilette: nbToilette,
                             propritaire: FirebaseAuth.instance.currentUser!.uid,
@@ -601,6 +613,7 @@ class _AddAppartementState extends State<AddAppartement> {
   @override
   void initState() {
     super.initState();
+    location();
     imgRef = FirebaseFirestore.instance.collection('imageURLs');
   }
 }

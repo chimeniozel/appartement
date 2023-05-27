@@ -113,7 +113,7 @@ class Appartement {
     return FirebaseFirestore.instance
         .collection("appartements")
         .where("propritaire", isEqualTo: uid)
-        .where("confirmation", isEqualTo: "acceptee")
+        // .where("confirmation", isEqualTo: "acceptee")
         .snapshots()
         .map((snapchot) => snapchot.docs
             .map((doc) => Appartement.fromJson(doc.data()))

@@ -72,7 +72,7 @@ class _MesAppartementsState extends State<MesAppartements> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
+                            const BorderRadius.all(Radius.circular(20)),
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                 offset: const Offset(4, 4),
@@ -98,12 +98,12 @@ class _MesAppartementsState extends State<MesAppartements> {
                                 motion: const StretchMotion(),
                                 children: [
                                   SlidableAction(
-                                      borderRadius:
-                                          const BorderRadius.all(Radius.circular(8)),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(8)),
                                       icon: UniconsLine.trash_alt,
                                       label: "Supprimer",
                                       backgroundColor:
-                                          Colors.red.withOpacity(0.9),
+                                      Colors.red.withOpacity(0.9),
                                       onPressed: (context) async {
                                         await FirebaseFirestore.instance
                                             .collection("appartements")
@@ -146,15 +146,27 @@ class _MesAppartementsState extends State<MesAppartements> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                trailing: Icon(
-                                  Icons.keyboard_arrow_right,
-                                  size: 30,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+                                trailing: Container(
+                                    width: 65,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: appartement.confirmation !=
+                                            "acceptee"
+                                            ? appartement.confirmation ==
+                                            "refusee"
+                                            ? red
+                                            : secondary
+                                            : primaryColor,
+                                        borderRadius:
+                                        BorderRadius.circular(10)),
+                                    child: Center(
+                                        child: Text(
+                                          appartement.confirmation.toString(),
+                                          style: const TextStyle(color: Colors.white),
+                                        ))),
                               ),
                             ),
-                          )
-                          ),
+                          )),
                     );
                   });
             } else if (snapshot.connectionState == ConnectionState.waiting) {
@@ -164,24 +176,24 @@ class _MesAppartementsState extends State<MesAppartements> {
                 ),
               );
             } else {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height,
-              child: Center(
-                  child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset("assets/svg/add.svg",
-                      width: 200, height: 200, fit: BoxFit.cover),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text("Vous n'avez pas ajouté d'appartement, ajoutez-en un"),
-                ],
-              )),
-            );
-          }
-          }
-          ),
+              return SizedBox(
+                height: MediaQuery.of(context).size.height,
+                child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset("assets/svg/add.svg",
+                            width: 200, height: 200, fit: BoxFit.cover),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Text(
+                            "Vous n'avez pas ajouté d'appartement, ajoutez-en un"),
+                      ],
+                    )),
+              );
+            }
+          })
       );
   }
 }

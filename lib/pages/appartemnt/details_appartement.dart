@@ -302,13 +302,16 @@ class _DetailsAppartementState extends State<DetailsAppartement> {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    widget.appartement.description.toString(),
-                    style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
-                        fontWeight: FontWeight.bold),
+                  Container(
+                    margin: widget.appartement.propritaire == FirebaseAuth.instance.currentUser!.uid ? EdgeInsets.only(bottom: 75) : null,
+                    child: Text(
+                      widget.appartement.description.toString(),
+                      style: TextStyle(
+                          color: Colors.black.withOpacity(0.8),
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  StreamBuilder<Users>(
+                  widget.appartement.propritaire != FirebaseAuth.instance.currentUser!.uid ? StreamBuilder<Users>(
                       stream: Users()
                           .getUser(widget.appartement.propritaire.toString()),
                       builder: (context, snapshot) {
@@ -450,12 +453,73 @@ class _DetailsAppartementState extends State<DetailsAppartement> {
                         } else {
                           return Container();
                         }
-                      }),
+                      }) : Container(),
                 ],
               ),
             )
           ]),
-        ));
+        ),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(left: 30),
+        child: ElevatedButton(
+            style:
+            ElevatedButton
+                .styleFrom(
+              shadowColor: Colors
+                  .black
+                  .withOpacity(
+                  1),
+              foregroundColor:
+              primary,
+              minimumSize:
+              const Size
+                  .fromHeight(50),
+              backgroundColor:
+              primaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius
+                      .circular(
+                      10)),
+              elevation: 1.5,
+            ),
+            onPressed:
+                () async {
+              // var url =
+              //     'https://wa.me/${user.telephone}';
+              // await launch(url);
+              await FirebaseFirestore
+                  .instance
+                  .collection(
+                  "appartements")
+                  .doc(widget
+                  .appartement
+                  .id)
+                  .update({
+                "confirmation":
+                "acceptee"
+              });
+            },
+            child: Row(
+              mainAxisAlignment:
+              MainAxisAlignment
+                  .spaceAround,
+              children: const [
+                Text(
+                  "Confirmer",
+                  style: TextStyle(
+                      color: Colors
+                          .white),
+                ),
+                Icon(
+                    FontAwesomeIcons
+                        .check,
+                    color: Colors
+                        .white)
+              ],
+            )),
+      ),
+    );
   }
 }
 

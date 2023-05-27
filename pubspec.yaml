@@ -56,6 +56,7 @@ dependencies:
   table_calendar: ^3.0.8
   intl: ^0.17.0
   flutter_slidable: ^2.0.0
+  geolocator: ^9.0.0
 
 dev_dependencies:
   flutter_test:
