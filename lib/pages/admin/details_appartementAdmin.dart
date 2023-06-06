@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: file_names, deprecated_member_use
 
 import 'package:appartement/model/Appartement.dart';
 import 'package:appartement/theme/color.dart';
@@ -587,7 +587,7 @@ Widget buildImage(String urlImage, int index, Appartement appartement) {
       placeholderFit: BoxFit.cover,
       fit: BoxFit.cover,
       placeholder: const AssetImage(
-        "assets/images/appartement2.png",
+        "assets/images/sekeni.png",
       ),
     ),
   );

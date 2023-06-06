@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'dart:ffi';
 import 'dart:io';
 import 'package:appartement/model/Appartement.dart';
 import 'package:appartement/widgets/input_widget.dart';
@@ -62,14 +61,14 @@ class _AddAppartementState extends State<AddAppartement> {
       lat = position.latitude;
       long = position.longitude;
     });
-    print("lat : $lat , long : $long");
+    // print("lat : $lat , long : $long");
   }
 
   @override
   Widget build(BuildContext context) {
     final inputProvider = Provider.of<InputProvider>(context);
     Future uploadFile(Appartement appartement) async {
-      print("test ================ ");
+      // print("test ================ ");
       setState(() {
         uploading = true;
       });

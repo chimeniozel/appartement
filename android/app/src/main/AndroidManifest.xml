@@ -22,7 +22,7 @@
   </intent>
 </queries>
    <application
-        android:label="appartement"
+        android:label="Sekeni"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

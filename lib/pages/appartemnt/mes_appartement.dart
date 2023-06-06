@@ -134,7 +134,7 @@ class _MesAppartementsState extends State<MesAppartements> {
                                         appartement.images!.first,
                                       ),
                                       placeholder: const AssetImage(
-                                          "assets/images/appartement2.png"),
+                                          "assets/images/sekeni.png"),
                                     ),
                                   ),
                                 ),
