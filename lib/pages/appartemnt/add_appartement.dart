@@ -122,6 +122,7 @@ class _AddAppartementState extends State<AddAppartement> {
 
           setState(() {
             _image.clear();
+            imagesUrl.clear();
             nbchamber = 0;
             nbToilette = 0;
             nbCuisines = 0;
@@ -190,9 +191,9 @@ class _AddAppartementState extends State<AddAppartement> {
                     hintText: "Discreption",
                     prefixIcon: IconlyLight.info_circle,
                     validator: (value) {
-                      if (value!.isNotEmpty && value.length >= 10) {
+                      if (value!.isNotEmpty && value.length >= 2) {
                         return null;
-                      } else if (value.isEmpty && value.length > 10) {
+                      } else if (value.isEmpty || value.length < 5) {
                         return "La Description Est Faible";
                       } else {
                         return "Entrez une Description";
@@ -208,9 +209,9 @@ class _AddAppartementState extends State<AddAppartement> {
                     hintText: "Addresse",
                     prefixIcon: IconlyLight.location,
                     validator: (value) {
-                      if (value!.isNotEmpty && value.length >= 10) {
+                      if (value!.isNotEmpty && value.length >= 2) {
                         return null;
-                      } else if (value.isEmpty && value.length > 10) {
+                      } else if (value.isEmpty || value.length < 5) {
                         return "L'Addresse Est Faible";
                       } else {
                         return "Entrez une Addresse";
@@ -540,8 +541,9 @@ class _AddAppartementState extends State<AddAppartement> {
                             description: inputProvider.discription.text,
                             images: imagesUrl,
                             favorisUID: <String>[],
-                            location: GeoPoint(lat!, long!),
+                            location: const GeoPoint(18.0887773, -15.9661104),
                             nbChamber: nbchamber,
+                            nbCuisines: nbCuisines,
                             nbToilette: nbToilette,
                             propritaire: FirebaseAuth.instance.currentUser!.uid,
                             louePar: "",

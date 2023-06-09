@@ -50,7 +50,7 @@ class _DetailsAppartementState extends State<DetailsAppartement> {
                   enableInfiniteScroll: false,
                   reverse: false,
                   autoPlay: true,
-                  autoPlayInterval: const Duration(seconds: 10),
+                  autoPlayInterval: const Duration(seconds: 7),
                   autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   autoPlayCurve: Curves.fastOutSlowIn,
                   enlargeCenterPage: true,
