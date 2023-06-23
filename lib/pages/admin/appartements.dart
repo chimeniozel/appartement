@@ -59,8 +59,8 @@ class _AppartementsAdminState extends State<AppartementsAdmin> {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                DetailsAppartementAdmin(appartement: appartement),
+                            builder: (context) => DetailsAppartementAdmin(
+                                appartement: appartement),
                           )),
                       child: Container(
                           margin: const EdgeInsets.symmetric(
@@ -158,7 +158,8 @@ class _AppartementsAdminState extends State<AppartementsAdmin> {
                                     child: Center(
                                         child: Text(
                                       appartement.confirmation.toString(),
-                                      style: const TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                     ))),
                               ),
                             ),

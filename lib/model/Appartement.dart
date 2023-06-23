@@ -16,7 +16,7 @@ class Appartement {
   final String? addresse;
   final int? prix;
   final String? propritaire;
-  final String? louePar;
+  final Timestamp? dateCreation;
   final String? status;
   final String? confirmation;
   final bool? forSell;
@@ -34,7 +34,7 @@ class Appartement {
     this.addresse,
     this.prix,
     this.propritaire,
-    this.louePar,
+    this.dateCreation,
     this.status,
     this.confirmation,
     this.forSell,
@@ -55,9 +55,9 @@ class Appartement {
       "addresse": addresse,
       "prix": prix,
       "propritaire": propritaire,
-      "louePar": louePar,
+      "dateCreation": dateCreation,
       "status": status,
-      "confirmation" : confirmation,
+      "confirmation": confirmation,
       "for_sell": forSell,
     };
   }
@@ -76,9 +76,9 @@ class Appartement {
         addresse: json["addresse"],
         prix: json["prix"],
         propritaire: json["propritaire"],
-        louePar: json["louePar"],
+        dateCreation: json["dateCreation"],
         status: json["status"],
-        confirmation : json["confirmation"],
+        confirmation: json["confirmation"],
         forSell: json["for_sell"],
       );
   Stream<List<Appartement>> getAppartements(
@@ -86,8 +86,9 @@ class Appartement {
     if (all == "all") {
       return FirebaseFirestore.instance
           .collection("appartements")
-          .where("propritaire", isNotEqualTo: uid)
+          // .where("propritaire", isNotEqualTo: uid)
           .where("confirmation", isEqualTo: "acceptee")
+          .orderBy("dateCreation", descending: true)
           .snapshots()
           .map((snapchot) {
         // print(snapchot.docs);
@@ -95,13 +96,13 @@ class Appartement {
             .map((doc) => Appartement.fromJson(doc.data()))
             .toList();
       });
-    }
-    else {
+    } else {
       return FirebaseFirestore.instance
           .collection("appartements")
-          .where("propritaire", isNotEqualTo: uid)
+          // .where("propritaire", isNotEqualTo: uid)
           .where("for_sell", isEqualTo: forSell)
           .where("confirmation", isEqualTo: "acceptee")
+          .orderBy("dateCreation", descending: true)
           .snapshots()
           .map((snapchot) => snapchot.docs
               .map((doc) => Appartement.fromJson(doc.data()))
@@ -133,11 +134,12 @@ class Appartement {
   Stream<List<Appartement>> getAllAppartements() {
     return FirebaseFirestore.instance
         .collection("appartements")
+        .orderBy("dateCreation", descending: true)
         // .where("confirmation", isEqualTo: "acceptee")
         .snapshots()
         .map((snapchot) => snapchot.docs
-        .map((doc) => Appartement.fromJson(doc.data()))
-        .toList());
+            .map((doc) => Appartement.fromJson(doc.data()))
+            .toList());
   }
 
   Stream<List<Appartement>> getFavoris(String uid) {
@@ -157,6 +159,7 @@ class Appartement {
         .snapshots()
         .map((snapchot) => snapchot.get("favorisUID"));
   }
+
   Stream getUIConfirmation(String docId) {
     return FirebaseFirestore.instance
         .collection("appartements")

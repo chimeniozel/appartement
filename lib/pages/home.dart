@@ -258,7 +258,9 @@ class _HomeState extends State<Home> {
                             if (snapshot.data![index].libele
                                 .toString()
                                 .toLowerCase()
-                                .contains(inputProvider.rechercher.text.toLowerCase())) {
+                                .contains(inputProvider.rechercher.text.toLowerCase())
+                                && snapshot.data![index].propritaire != FirebaseAuth.instance.currentUser!.uid
+                                ) {
                               return InkWell(
                                 onTap: () {
                                   Navigator.push(

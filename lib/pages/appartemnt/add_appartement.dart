@@ -546,7 +546,7 @@ class _AddAppartementState extends State<AddAppartement> {
                             nbCuisines: nbCuisines,
                             nbToilette: nbToilette,
                             propritaire: FirebaseAuth.instance.currentUser!.uid,
-                            louePar: "",
+                            dateCreation: Timestamp.now(),
                             prix: int.parse(inputProvider.prix.text),
                             status: "Libre",
                             wilaya: value,
