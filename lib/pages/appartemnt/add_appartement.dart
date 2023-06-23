@@ -211,7 +211,7 @@ class _AddAppartementState extends State<AddAppartement> {
                     validator: (value) {
                       if (value!.isNotEmpty && value.length >= 2) {
                         return null;
-                      } else if (value.isEmpty || value.length < 5) {
+                      } else if (value.isEmpty) {
                         return "L'Addresse Est Faible";
                       } else {
                         return "Entrez une Addresse";
@@ -227,7 +227,7 @@ class _AddAppartementState extends State<AddAppartement> {
                     hintText: "Prix",
                     prefixIcon: Iconsax.dollar_circle,
                     validator: (value) {
-                      if (value!.isNotEmpty && value.length > 2) {
+                      if (value!.isNotEmpty) {
                         return null;
                       } else if (value.isEmpty) {
                         return "Entrez La Prix";
